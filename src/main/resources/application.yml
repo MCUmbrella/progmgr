@@ -1,0 +1,9 @@
+server:
+  port: 8077
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+spring:
+  application:
+    name: PROGMGR
