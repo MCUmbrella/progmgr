@@ -7,6 +7,7 @@ public class Main
 {
     public static void main(String[] args)
     {
+        long a = System.currentTimeMillis();
         //SpringApplication.run(Main.class, args);
         DataManager.initialize();
         ProgramData p = ProgramData.fromString("{\n" +
@@ -15,11 +16,11 @@ public class Main
                 "    \"point\": \"主打就是一个颠覆三观！\"," +
                 "    \"actors\": \"张飞，周瑜，诸葛亮\"" +
                 "}");
-        System.out.println(DataManager.createData(p));
-        for(int i = 1; i != 100001; i++)
+        for(int i = 0; i != 10000; i++)
         {
             p.setName(i + "顾茅庐");
             DataManager.createData(p);
         }
+        System.out.println(System.currentTimeMillis() - a);
     }
 }

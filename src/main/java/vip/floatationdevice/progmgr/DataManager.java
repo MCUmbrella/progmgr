@@ -107,9 +107,12 @@ public class DataManager //TODO: index by per 10000 files & add HashMap based ca
         try
         {
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(".progmgr", String.valueOf(lastId + 1L))));
+            BufferedOutputStream bos = new BufferedOutputStream(oos, 512);
             oos.writeObject(p);
             oos.flush();
             oos.close();
+            bos.flush();
+            bos.close();
             saveLastId(lastId + 1);
             l.info("Saved program info of " + p.getName() + ", ID=" + (lastId + 1L));
         }
