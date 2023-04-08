@@ -65,21 +65,27 @@ public class DataReadController
     @ResponseBody
     public CommonMapResult actionFindData(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, HttpServletResponse response) throws Exception
     {
-        if(requestBody.get("type") == null && requestBody.get("num") == null && requestBody.get("name") == null)
+        Object type = requestBody.get("type"), num = requestBody.get("num"), name = requestBody.get("name");
+        if(type == null && num == null && name == null)
         {
             response.sendError(400, "Missing parameter");
             return null;
         }
-        if((requestBody.get("type") != null && !(requestBody.get("type") instanceof String)) ||
-                (requestBody.get("num") != null && !(requestBody.get("num") instanceof Integer)) ||
-                (requestBody.get("name") != null && !(requestBody.get("name") instanceof String))
+        if((type != null && !(type instanceof String)) ||
+                (num != null && !(num instanceof Integer)) ||
+                (name != null && !(name instanceof String))
         )
         {
             response.sendError(400, "Invalid parameter type");
             return null;
         }
+        if(name != null && ((String) name).isBlank())
+        {
+            response.sendError(400, "Name is empty");
+            return null;
+        }
         HashMap<String, Object> programSearchResults = new HashMap<>();
-        programSearchResults.put("programSearchResults", DataManager.findData((String) requestBody.get("type"), (Integer) requestBody.get("num"), (String) requestBody.get("name")));
+        programSearchResults.put("programSearchResults", DataManager.findData((String) type, (Integer) num, (String) name));
         return new CommonMapResult(0, "OK", programSearchResults);
     }
 }

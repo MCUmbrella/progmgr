@@ -44,7 +44,7 @@ public interface ProgramDataMapper
             "AND actorCount = #{actorCount}",
             "</if>",
             "<if test='name != null'>",
-            "AND name LIKE #{name}",
+            "AND name LIKE printf('%%%s%%', #{name})",
             "</if>",
             "</where>",
             "</script>"
