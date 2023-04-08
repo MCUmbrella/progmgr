@@ -14,6 +14,7 @@ import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@SuppressWarnings("unused")
 @RestController
 public class DataReadController
 {
@@ -35,7 +36,7 @@ public class DataReadController
         }
         else
         {
-            HashMap programResults = new HashMap();
+            HashMap<String, Object> programResults = new HashMap<>();
             programResults.put("programResults", DataManager.getPagedData((int) requestBody.get("pageNum")));
             return new CommonMapResult(0, "OK", programResults);
         }
@@ -55,7 +56,7 @@ public class DataReadController
             response.sendError(404, "No such program");
             return null;
         }
-        HashMap program = new HashMap();
+        HashMap<String, Object> program = new HashMap<>();
         program.put("program", DataManager.getData((int) requestBody.get("id")));
         return new CommonMapResult(0, "OK", program);
     }
@@ -77,7 +78,7 @@ public class DataReadController
             response.sendError(400, "Invalid parameter type");
             return null;
         }
-        HashMap programSearchResults = new HashMap();
+        HashMap<String, Object> programSearchResults = new HashMap<>();
         programSearchResults.put("programSearchResults", DataManager.findData((String) requestBody.get("type"), (Integer) requestBody.get("num"), (String) requestBody.get("name")));
         return new CommonMapResult(0, "OK", programSearchResults);
     }

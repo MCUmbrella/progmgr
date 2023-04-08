@@ -79,7 +79,7 @@ public class ProgramData implements Serializable
      */
     public Map<String, Object> toMap()
     {
-        HashMap<String, Object> m = new HashMap<String, Object>();
+        HashMap<String, Object> m = new HashMap<>();
         m.put("id", id);
         m.put("typeName", typeName);
         m.put("name", name);

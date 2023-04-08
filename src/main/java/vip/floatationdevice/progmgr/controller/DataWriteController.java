@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vip.floatationdevice.progmgr.data.CommonMapResult;
 
+@SuppressWarnings("unused")
 @RestController
 public class DataWriteController
 {

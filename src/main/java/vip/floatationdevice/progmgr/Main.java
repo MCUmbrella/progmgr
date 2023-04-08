@@ -19,25 +19,6 @@ public class Main
         System.out.println("PROGMGR is starting up");
         applicationContext = SpringApplication.run(Main.class, args);
         l.info("PROGMGR startup completed");
-/*
-        // generate some sample program data
-        Random r = new Random();
-        char[] alp = "QWERTYUIOPASDFGHJKLZXCVBNM".toCharArray();
-        ProgramData p = new ProgramData();
-        for(int i = 1; i != 1001; i++)
-        {
-            p.setName("Program#" + i);
-            p.setView("Description of program #" + i);
-            p.setTypeName("" + alp[r.nextInt(alp.length)]);
-            StringBuilder sb = new StringBuilder();
-            for(int j = -1, k = r.nextInt(100); j != k; j++)
-                sb.append(alp[r.nextInt(alp.length)]).append(',');
-            sb.deleteCharAt(sb.length() - 1);
-            p.setActorList(sb.toString());
-            DataManager.insertData(p);
-        }
-        DataManager.session.commit();
-*/
     }
 
     public static ConfigurableApplicationContext getContext(){return applicationContext;}

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@SuppressWarnings("unused")
 @RestController
 public class TestController
 {

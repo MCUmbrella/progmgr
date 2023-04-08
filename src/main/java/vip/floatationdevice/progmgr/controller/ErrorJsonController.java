@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 @Controller
 public class ErrorJsonController implements ErrorController
 {
@@ -17,7 +18,7 @@ public class ErrorJsonController implements ErrorController
     @ResponseBody
     public Map<String, Object> action(HttpServletRequest request)
     {
-        HashMap<String, Object> m = new HashMap<String, Object>();
+        HashMap<String, Object> m = new HashMap<>();
         m.put("code", String.valueOf(request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE)));
         m.put("message", request.getAttribute(RequestDispatcher.ERROR_MESSAGE));
         return m;

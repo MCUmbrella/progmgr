@@ -13,8 +13,9 @@ package vip.floatationdevice.progmgr.data;
  */
 public class CommonMapResult
 {
-    public String code, message;
-    public Object data;
+    public final String code;
+    public final String message;
+    public final Object data;
 
     /**
      * Generate a common result.
