@@ -44,7 +44,7 @@ public interface ProgramDataMapper
             "AND actorCount = #{actorCount}",
             "</if>",
             "<if test='name != null'>",
-            "AND name like CONCAT('%',#{name},'%')",
+            "AND name LIKE #{name}",
             "</if>",
             "</where>",
             "</script>"
