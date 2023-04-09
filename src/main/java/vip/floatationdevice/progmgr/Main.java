@@ -33,6 +33,7 @@ public class Main
         l.info("PROGMGR is starting up");
         applicationContext = SpringApplication.run(Main.class, args);
         l.info("PROGMGR startup completed");
+        l.info("Web interface: http://127.0.0.1:8077/SP-IMS.html");
     }
 
     public static ConfigurableApplicationContext getContext(){return applicationContext;}
