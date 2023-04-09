@@ -158,22 +158,22 @@ var v1 = new Vue({
   data() {
     return {
       cateOptions: [{
-        value: 1,
+        value: '歌舞',
         label: '歌舞'
       }, {
-        value: 2,
+        value: '戏曲',
         label: '戏曲'
       }, {
-        value: 3,
+        value: '小品',
         label: '小品'
       }, {
-        value: 4,
+        value: '相声',
         label: '相声'
       }, {
-        value: 5,
+        value: '武术',
         label: '武术'
       }, {
-        value: 6,
+        value: '其他',
         label: '其他'
       }],
       

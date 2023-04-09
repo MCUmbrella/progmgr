@@ -11,8 +11,6 @@ import vip.floatationdevice.progmgr.data.CommonMapResult;
 
 import java.util.HashMap;
 
-import static vip.floatationdevice.progmgr.CommonUtil.isBlank;
-
 @SuppressWarnings("unused")
 @RestController
 public class DataReadController
@@ -29,7 +27,7 @@ public class DataReadController
     public CommonMapResult actionGetPagedData(HttpServletRequest request, HttpServletResponse response, @RequestParam(name = "pageNum") Integer pageNum) throws Exception
     {
         HashMap<String, Object> programResults = new HashMap<>();
-        programResults.put("programResults", DataManager.getPagedData(pageNum));
+        programResults.put("programResults", DataManager.getPagedData(pageNum - 1));
         return new CommonMapResult(0, "OK", programResults);
     }
 

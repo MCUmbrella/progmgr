@@ -30,9 +30,9 @@ public class ProgramData implements Serializable
     private Integer id = Integer.MIN_VALUE, actorCount = Integer.MIN_VALUE;
     private String name, typeName, view, actorList;
 
-    public int getId(){return id;}
+    public Integer getId(){return id;}
 
-    public int getActorCount(){return actorCount;}
+    public Integer getActorCount(){return actorCount;}
 
     public String getName(){return name;}
 
@@ -42,9 +42,9 @@ public class ProgramData implements Serializable
 
     public String getActorList(){return actorList;}
 
-    public void setId(int id){this.id = id;}
+    public void setId(Integer id){this.id = id;}
 
-    public void setActorCount(int actorCount){this.actorCount = actorCount;}
+    public void setActorCount(Integer actorCount){this.actorCount = actorCount;}
 
     public void setName(String name){this.name = name;}
 
