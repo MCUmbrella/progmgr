@@ -27,7 +27,7 @@ import java.util.Map;
 public class ProgramData implements Serializable
 {
     public static final long serialVersionUID = 0L;
-    private int id = Integer.MIN_VALUE, actorCount = Integer.MIN_VALUE;
+    private Integer id = Integer.MIN_VALUE, actorCount = Integer.MIN_VALUE;
     private String name, typeName, view, actorList;
 
     public int getId(){return id;}
@@ -61,16 +61,21 @@ public class ProgramData implements Serializable
     /**
      * Use: converting data from the front-end.
      */
-    public static ProgramData fromString(String json)
+    public static ProgramData fromJson(JSONObject j)
     {
         ProgramData p = new ProgramData();
-        JSONObject j = new JSONObject(json);
+        p.setId(j.getInt("id"));
         p.setTypeName(j.getStr("type"));
         p.setName(j.getStr("name"));
         p.setView(j.getStr("point"));
         p.setActorList(j.getStr("actors"));
         p.setActorCount(j.getStr("actors").split("[\\uFF0C,]").length);
         return p;
+    }
+
+    public static ProgramData fromString(String jsonStr)
+    {
+        return fromJson(new JSONObject(jsonStr));
     }
 
     /**
