@@ -64,12 +64,22 @@ public class ProgramData implements Serializable
     public static ProgramData fromJson(JSONObject j)
     {
         ProgramData p = new ProgramData();
+        String[] actors = j.getStr("actors").split("[\\uFF0C,]");
+        StringBuilder actorsList = new StringBuilder();
+        int actorCount = 0;
+        for(String s : actors)
+            if(!s.isBlank())
+            {
+                actorsList.append(s.trim()).append(',');
+                actorCount++;
+            }
+        actorsList.deleteCharAt(actorsList.length() - 1);
         p.setId(j.getInt("id"));
         p.setTypeName(j.getStr("type"));
         p.setName(j.getStr("name"));
         p.setView(j.getStr("point"));
-        p.setActorList(j.getStr("actors"));
-        p.setActorCount(j.getStr("actors").split("[\\uFF0C,]").length);
+        p.setActorList(actorsList.toString());
+        p.setActorCount(actorCount);
         return p;
     }
 

@@ -20,7 +20,7 @@ public class TestController
 
     @GetMapping("/echo")
     @ResponseBody
-    public CommonMapResult echoAction(@RequestParam(value = "message", required = true) String message)
+    public CommonMapResult echoAction(@RequestParam(value = "message") String message)
     {
         return new CommonMapResult(message.length(), message, null);
     }

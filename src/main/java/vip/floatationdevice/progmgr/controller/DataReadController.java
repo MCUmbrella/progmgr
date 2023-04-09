@@ -2,7 +2,7 @@ package vip.floatationdevice.progmgr.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,14 +15,14 @@ import java.util.HashMap;
 @RestController
 public class DataReadController
 {
-    @RequestMapping("/get/programCount")
+    @GetMapping("/get/programCount")
     @ResponseBody
     public CommonMapResult actionGetDataCount()
     {
         return new CommonMapResult(0, "OK", DataManager.getDataCount());
     }
 
-    @RequestMapping("/get/programList")
+    @GetMapping("/get/programList")
     @ResponseBody
     public CommonMapResult actionGetPagedData(HttpServletRequest request, HttpServletResponse response, @RequestParam(name = "pageNum") Integer pageNum) throws Exception
     {
@@ -31,7 +31,7 @@ public class DataReadController
         return new CommonMapResult(0, "OK", programResults);
     }
 
-    @RequestMapping("/get/program")
+    @GetMapping("/get/program")
     @ResponseBody
     public CommonMapResult actionGetData(HttpServletRequest request, HttpServletResponse response, @RequestParam(name = "id") Integer id) throws Exception
     {
@@ -45,7 +45,7 @@ public class DataReadController
         return null;
     }
 
-    @RequestMapping("/get/search")
+    @GetMapping("/get/search")
     @ResponseBody
     public CommonMapResult actionFindData(
             HttpServletRequest request, HttpServletResponse response,

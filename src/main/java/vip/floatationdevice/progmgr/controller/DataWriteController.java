@@ -3,8 +3,8 @@ package vip.floatationdevice.progmgr.controller;
 import cn.hutool.json.JSONObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vip.floatationdevice.progmgr.DataManager;
 import vip.floatationdevice.progmgr.data.CommonMapResult;
@@ -20,7 +20,7 @@ import static vip.floatationdevice.progmgr.CommonUtil.isBlank;
 @RestController
 public class DataWriteController
 {
-    @RequestMapping(value = "/add/program", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/add/program", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public CommonMapResult actionInsertProgram(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         Object type = requestBody.get("type"), name = requestBody.get("name"), point = requestBody.get("point"), actors = requestBody.get("actors");
@@ -45,7 +45,7 @@ public class DataWriteController
         return null;
     }
 
-    @RequestMapping(value = "/delete/program", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/delete/program", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public CommonMapResult actionDeleteProgram(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         Object id = requestBody.get("id");
@@ -66,7 +66,7 @@ public class DataWriteController
         return null;
     }
 
-    @RequestMapping(value = "/update/program", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/update/program", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public CommonMapResult actionUpdateProgram(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         Object id = requestBody.get("id"), type = requestBody.get("type"), name = requestBody.get("name"), point = requestBody.get("point"), actors = requestBody.get("actors");

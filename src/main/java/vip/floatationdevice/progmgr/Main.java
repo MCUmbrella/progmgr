@@ -16,7 +16,21 @@ public class Main
 
     public static void main(String[] args)
     {
-        System.out.println("PROGMGR is starting up");
+        for(String a : args)
+            if("--fixdb".equals(a))
+                try
+                {
+                    DataManager.resetDatabase();
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+                finally
+                {
+                    System.exit(0);
+                }
+        l.info("PROGMGR is starting up");
         applicationContext = SpringApplication.run(Main.class, args);
         l.info("PROGMGR startup completed");
     }
@@ -36,7 +50,7 @@ public class Main
     }
 
     /**
-     * Call this to shutdown PROGMGR.
+     * Call this to shut down PROGMGR.
      * @param code The exit code returned to the operating system.
      */
     public static void shutdown(int code)

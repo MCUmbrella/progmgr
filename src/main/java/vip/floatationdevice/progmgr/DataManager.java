@@ -8,7 +8,8 @@ import org.slf4j.LoggerFactory;
 import vip.floatationdevice.progmgr.data.ProgramData;
 import vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper;
 
-import java.io.InputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class DataManager
 {
     private static final Logger l = LoggerFactory.getLogger(DataManager.class);
+    private static final SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(Main.class.getResourceAsStream("/mybatis.xml"));
     private static boolean ready = false;
     static SqlSession session = null;
 
@@ -35,9 +37,8 @@ public class DataManager
         try
         {
             l.info("Checking database");
-            InputStream i = Main.class.getResourceAsStream("/mybatis.xml");
-            SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(i);
             factory.getConfiguration().addMapper(ProgramDataMapper.class);
+            if(!new File("progmgr.db").exists()) createDatabase();
             session = factory.openSession();
             int count = session.selectOne("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.getDataCount");
             l.info("" + count + " program data found");
@@ -46,6 +47,7 @@ public class DataManager
         catch(Exception e)
         {
             l.error("DATABASE CHECK UNSUCCESSFUL: " + e);
+            l.error("Reset the database by running the program with '--fixdb' argument");
             e.printStackTrace();
             Main.shutdown(-1);
         }
@@ -56,6 +58,43 @@ public class DataManager
     public static boolean isReady(){return ready;}
 
     public static void checkReady(){if(!ready) throw new IllegalStateException("DataManager is not initialized");}
+
+    public static void resetDatabase() throws Exception
+    {
+        l.warn("PERFORMING DATABASE RESET");
+        File db = new File("progmgr.db");
+        if(ready)
+        {
+            ready = false;
+            session.close();
+            db.renameTo(new File("progmgr.db.OLD"));
+            l.info("Existing database renamed to 'progmgr.db.OLD'");
+            createDatabase();
+            session = factory.openSession();
+            ready = true;
+        }
+        else
+        {
+            if(db.exists() || !db.isFile())
+            {
+                db.renameTo(new File("progmgr.db.OLD"));
+                l.info("Existing database renamed to 'progmgr.db.OLD'");
+            }
+            createDatabase();
+        }
+        l.warn("DATABASE RESET SUCCESSFUL");
+    }
+
+    private static void createDatabase() throws Exception
+    {
+        l.info("Creating default database");
+        File db = new File("progmgr.db");
+        FileOutputStream fos = new FileOutputStream(db);
+        fos.write(Main.class.getResourceAsStream("/progmgr.db").readAllBytes());
+        fos.flush();
+        fos.close();
+        l.info("Database created");
+    }
 
 // ==================== READ RELATED FUNCTIONS ====================
 
