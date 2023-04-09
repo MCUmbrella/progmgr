@@ -54,6 +54,30 @@ Example response:
 }
 ```
 
+### Program information
+Method & URL: `GET /get/program`
+
+Parameters:
+- id: Integer (required)
+
+Example response:
+```json
+{
+    "code": "0",
+    "message": "OK",
+    "data": {
+        "program": {
+            "id": 2,
+            "actorCount": 2,
+            "name": "Prog1",
+            "typeName": "Other",
+            "view": "description",
+            "actorList": "actor1,actor2"
+        }
+    }
+}
+```
+
 ### Program search
 Method & URL: `GET /get/search`
 
