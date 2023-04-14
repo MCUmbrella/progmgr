@@ -37,29 +37,29 @@ var v1 = new Vue({
         this.getDate(pageNum);
       }
     },
-    addConfirm(){
-      this.isAdd=false
-      this.addData(this.addForm)
+    add() {
+      this.isAdd = true
     },
-    add(){
-      this.isAdd=true
+    addConfirm() {
+      this.isAdd = false
+      this.addData(this.addForm)
     },
     async addData(addForm) {
       const { data: res } = await axios({
         method: "post",
         url: "/add/program",
         data: {
-          type:addForm.category,
-          name:addForm.program,
-          actors:addForm.actor,
-          point:addForm.point
+          type: addForm.category,
+          name: addForm.program,
+          actors: addForm.actor,
+          point: addForm.point
         },
         headers: {
           "content-type": "application/json",
         },
       });
       console.log(res)
-      if(res.code=='0'){
+      if (res.code == '0') {
         this.getDate(this.pageNum);
         this.$message({
           message: '新增成功',
@@ -68,16 +68,55 @@ var v1 = new Vue({
       } else {
         this.$message.error(res.message);
       }
-      
+
+    },
+    edit(row) {
+      this.editForm.category = row.typeName
+      this.editForm.program = row.name
+      this.editForm.actor = row.actorList
+      this.editForm.point = row.view
+      this.isEdit = true
+
+    },
+    editConfirm() {
+      this.isEdit = false,
+        this.editData(this.editForm)
+    },
+    async editData(editForm) {
+      const { data: res } = await axios({
+        method: "post",
+        url: "/update/program",
+        data: {
+          id: index,
+          type: editForm.category,
+          name: editForm.program,
+          actors: editForm.actor,
+          point: editForm.point
+        },
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+      console.log(res)
+      if (res.code == '0') {
+        this.getDate(this.pageNum);
+        this.$message({
+          message: '编辑成功',
+          type: 'success'
+        });
+      } else {
+        this.$message.error(res.message);
+      }
+
     },
     async search(searchForm) {
       const { data: res } = await axios({
         method: "get",
         url: "/get/search",
         params: {
-          type:searchForm.category,
-          num:searchForm.actorNum,
-          name:searchForm.program
+          type: searchForm.category,
+          num: searchForm.actorNum,
+          name: searchForm.program
         },
         headers: {
           "content-type": "application/json",
@@ -92,58 +131,19 @@ var v1 = new Vue({
       console.log(res.data.programSearchResults)
       console.log(this.tableData)
     },
-    edit(row){
-      this.editForm.category=row.typeName
-      this.editForm.program=row.name
-      this.editForm.actor=row.actorList
-      this.editForm.point=row.view
-      this.isEdit=true
-      
-    },
-    editConfirm(){
-      this.isEdit=false,
-      this.editData(editForm)
-    },
-    async editData(editForm) {
-      const { data: res } = await axios({
-        method: "post",
-        url: "/update/program",
-        data: {
-          id:index,
-          type:editForm.category,
-          name:editForm.program,
-          actors:editForm.actor,
-          point:editForm.point
-        },
-        headers: {
-          "content-type": "application/json",
-        },
-      });
-      console.log(res)
-      if(res.code=='0'){
-        this.getDate(this.pageNum);
-        this.$message({
-          message: '编辑成功',
-          type: 'success'
-        });
-      } else {
-        this.$message.error(res.message);
-      }
-      
-    },
     async deleteData(index) {
       const { data: res } = await axios({
         method: "post",
         url: "/delete/program",
         data: {
-          id:index
+          id: index
         },
         headers: {
           "content-type": "application/json",
         },
       });
       console.log(res)
-      if(res.code=='0'){
+      if (res.code == '0') {
         this.getDate(this.pageNum);
         this.$message({
           message: '删除成功',
@@ -152,7 +152,7 @@ var v1 = new Vue({
       } else {
         this.$message.error(res.message);
       }
-      
+
     },
   },
   data() {
@@ -176,27 +176,27 @@ var v1 = new Vue({
         value: '其他',
         label: '其他'
       }],
-      
-      addForm:{
-        category:null,
-        program:null,
-        actor:null,
-        point:null
+
+      addForm: {
+        category: null,
+        program: null,
+        actor: null,
+        point: null
       },
-      searchForm:{
-        category:null,
-        actorNum:null,
-        program:null,
+      searchForm: {
+        category: null,
+        actorNum: null,
+        program: null,
       },
-      editForm:{
-        category:null,
-        program:null,
-        actor:null,
-        point:null
+      editForm: {
+        category: null,
+        program: null,
+        actor: null,
+        point: null
       },
       value: '',
-      isEdit:false,
-      isAdd:false,
+      isEdit: false,
+      isAdd: false,
       tableData: [],
       pageNum: 1,
     };
