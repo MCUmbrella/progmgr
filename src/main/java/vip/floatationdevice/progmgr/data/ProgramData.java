@@ -74,9 +74,9 @@ public class ProgramData implements Serializable
             }
         if(actorsList.length() != 0) actorsList.deleteCharAt(actorsList.length() - 1);
         p.setId(j.getInt("id"));
-        p.setTypeName(j.getStr("type"));
-        p.setName(j.getStr("name"));
-        p.setView(j.getStr("point"));
+        p.setTypeName(j.getStr("type").trim());
+        p.setName(j.getStr("name").trim());
+        p.setView(j.getStr("point").trim());
         p.setActorList(actorsList.toString());
         p.setActorCount(actorCount);
         return p;
