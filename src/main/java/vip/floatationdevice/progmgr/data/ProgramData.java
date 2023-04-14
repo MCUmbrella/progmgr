@@ -23,7 +23,6 @@ import java.util.Map;
 /**
  * Represents a show (or "program". whatever)
  */
-@SuppressWarnings("unused")
 public class ProgramData implements Serializable
 {
     public static final long serialVersionUID = 0L;
