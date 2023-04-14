@@ -71,12 +71,12 @@ var v1 = new Vue({
 
     },
     edit(row) {
+      this.editForm.programId = row.id
       this.editForm.category = row.typeName
       this.editForm.program = row.name
       this.editForm.actor = row.actorList
       this.editForm.point = row.view
       this.isEdit = true
-
     },
     editConfirm() {
       this.isEdit = false,
@@ -87,7 +87,7 @@ var v1 = new Vue({
         method: "post",
         url: "/update/program",
         data: {
-          id: index,
+          id: editForm.programId,
           type: editForm.category,
           name: editForm.program,
           actors: editForm.actor,
