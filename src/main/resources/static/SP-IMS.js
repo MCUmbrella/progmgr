@@ -5,7 +5,7 @@ var v1 = new Vue({
       console.log(row);
     },
 
-    async getDate(pageNum) {
+    async getData(pageNum) {
       const { data: res } = await axios({
         method: "get",
         url: "/get/programList",
@@ -34,7 +34,7 @@ var v1 = new Vue({
       if (pageNum <= 0) {
         return;
       } else {
-        this.getDate(pageNum);
+        this.getData(pageNum);
       }
     },
     add() {
@@ -60,7 +60,7 @@ var v1 = new Vue({
       });
       console.log(res)
       if (res.code == '0') {
-        this.getDate(this.pageNum);
+        this.getData(this.pageNum);
         this.$message({
           message: '新增成功',
           type: 'success'
@@ -99,7 +99,7 @@ var v1 = new Vue({
       });
       console.log(res)
       if (res.code == '0') {
-        this.getDate(this.pageNum);
+        this.getData(this.pageNum);
         this.$message({
           message: '编辑成功',
           type: 'success'
@@ -144,7 +144,7 @@ var v1 = new Vue({
       });
       console.log(res)
       if (res.code == '0') {
-        this.getDate(this.pageNum);
+        this.getData(this.pageNum);
         this.$message({
           message: '删除成功',
           type: 'success'
@@ -202,6 +202,6 @@ var v1 = new Vue({
     };
   },
   created() {
-    this.getDate(this.pageNum);
+    this.getData(this.pageNum);
   },
 });
