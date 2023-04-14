@@ -21,7 +21,7 @@ public interface ProgramDataMapper
     List<ProgramData> getAllData();
 
     // list data by page
-    @Select("SELECT * FROM programs LIMIT #{offset}, 20")
+    @Select("SELECT * FROM programs LIMIT #{offset}, 5")
     List<ProgramData> getPagedData(@Param("offset") int offset);
 
     // check existence
@@ -41,7 +41,14 @@ public interface ProgramDataMapper
             "AND typeName = #{typeName}",
             "</if>",
             "<if test='actorCount != null'>",
+            "<choose>",
+            "<when test='actorCount >= 3'>",
+            "AND actorCount >= #{actorCount}",
+            "</when>",
+            "<otherwise>",
             "AND actorCount = #{actorCount}",
+            "</otherwise>",
+            "</choose>",
             "</if>",
             "<if test='name != null'>",
             "AND name LIKE printf('%%%s%%', #{name})",

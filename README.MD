@@ -3,9 +3,6 @@ Simple web application for managing the program list used by the spring festival
 # Web interface
 http://127.0.0.1:8077/SP-IMS.html
 
-# Known bugs
-- Fail to update programs due to unknown reasons (in the web interface, javascript related issues)
-
 # API
 ## Read
 ### Program count
@@ -20,7 +17,7 @@ Example response:
 }
 ```
 
-### Program list (max 20 per page)
+### Program list (max 5 per page)
 Method & URL: `GET /get/programList`
 
 Parameters:

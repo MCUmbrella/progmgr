@@ -116,7 +116,7 @@ public class DataManager
     public static List<ProgramData> getPagedData(int page)
     {
         checkReady();
-        return session.selectList("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.getPagedData", page * 20);
+        return session.selectList("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.getPagedData", page * 5);
     }
 
     /**
