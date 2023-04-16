@@ -1,26 +1,25 @@
 package vip.floatationdevice.progmgr;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.test.context.SpringBootTest;
 import vip.floatationdevice.progmgr.data.ProgramData;
 
 import java.util.Random;
 
 @SpringBootTest
+@Slf4j
 class Test
 {
-    private static final Logger l = LoggerFactory.getLogger(Test.class);
     private static final boolean GEN_SAMPLE = false;
+
     @org.junit.jupiter.api.Test
     void contextLoads()
     {
-        l.info("Test.contextLoads() BEGIN");
-
+        log.info("Test.contextLoads() BEGIN");
         // generate some sample program data
         if(GEN_SAMPLE)
         {
-            l.info("Generating sample program data");
+            log.info("Generating sample program data");
             Random r = new Random();
             char[] alp = "QWERTYUIOPASDFGHJKLZXCVBNM".toCharArray();
             ProgramData p = new ProgramData();
@@ -37,9 +36,8 @@ class Test
                 DataManager.insertData(p);
             }
             DataManager.session.commit();
-            l.info("Sample program data generated");
+            log.info("Sample program data generated");
         }
-
-        l.info("Test.contextLoads() END");
+        log.info("Test.contextLoads() END");
     }
 }

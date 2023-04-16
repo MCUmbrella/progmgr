@@ -1,10 +1,9 @@
 package vip.floatationdevice.progmgr;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import vip.floatationdevice.progmgr.data.ProgramData;
 import vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper;
 
@@ -17,9 +16,9 @@ import java.util.List;
  * Manages saved program data.
  */
 @SuppressWarnings("unused")
+@Slf4j
 public class DataManager
 {
-    private static final Logger l = LoggerFactory.getLogger(DataManager.class);
     private static final SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(Main.class.getResourceAsStream("/mybatis.xml"));
     private static boolean ready = false;
     static SqlSession session = null;
@@ -32,26 +31,26 @@ public class DataManager
      */
     public static synchronized void initialize()
     {
-        l.info("DataManager is initializing");
+        log.info("DataManager is initializing");
         if(ready) throw new IllegalStateException("DataManager already initialized");
         try
         {
-            l.info("Checking database");
+            log.info("Checking database");
             factory.getConfiguration().addMapper(ProgramDataMapper.class);
             if(!new File("progmgr.db").exists()) createDatabase();
             session = factory.openSession();
             int count = session.selectOne("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.getDataCount");
-            l.info("" + count + " program data found");
-            l.info("Database OK");
+            log.info("" + count + " program data found");
+            log.info("Database OK");
         }
         catch(Exception e)
         {
-            l.error("DATABASE CHECK UNSUCCESSFUL: " + e);
-            l.error("Reset the database by running the program with '--fixdb' argument");
+            log.error("DATABASE CHECK UNSUCCESSFUL: " + e);
+            log.error("Reset the database by running the program with '--fixdb' argument");
             e.printStackTrace();
             Main.shutdown(-1);
         }
-        l.info("DataManager is ready");
+        log.info("DataManager is ready");
         ready = true;
     }
 
@@ -61,14 +60,14 @@ public class DataManager
 
     public static void resetDatabase() throws Exception
     {
-        l.warn("PERFORMING DATABASE RESET");
+        log.warn("PERFORMING DATABASE RESET");
         File db = new File("progmgr.db");
         if(ready)
         {
             ready = false;
             session.close();
             db.renameTo(new File("progmgr.db.OLD"));
-            l.info("Existing database renamed to 'progmgr.db.OLD'");
+            log.info("Existing database renamed to 'progmgr.db.OLD'");
             createDatabase();
             session = factory.openSession();
             ready = true;
@@ -78,22 +77,22 @@ public class DataManager
             if(db.exists() || !db.isFile())
             {
                 db.renameTo(new File("progmgr.db.OLD"));
-                l.info("Existing database renamed to 'progmgr.db.OLD'");
+                log.info("Existing database renamed to 'progmgr.db.OLD'");
             }
             createDatabase();
         }
-        l.warn("DATABASE RESET SUCCESSFUL");
+        log.warn("DATABASE RESET SUCCESSFUL");
     }
 
     private static void createDatabase() throws Exception
     {
-        l.info("Creating default database");
+        log.info("Creating default database");
         File db = new File("progmgr.db");
         FileOutputStream fos = new FileOutputStream(db);
         fos.write(Main.class.getResourceAsStream("/progmgr.db").readAllBytes());
         fos.flush();
         fos.close();
-        l.info("Database created");
+        log.info("Database created");
     }
 
 // ==================== READ RELATED FUNCTIONS ====================
@@ -169,15 +168,15 @@ public class DataManager
     {
         if(p == null) throw new IllegalArgumentException("ProgramData is null");
         checkReady();
-        l.info("Adding program: " + p.getName());
+        log.info("Adding program: " + p.getName());
         int result = session.insert("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.insertData", p);
         session.commit();
         if(result == 1)
         {
-            l.info("Program added: " + p.getName());
+            log.info("Program added: " + p.getName());
             return true;
         }
-        else l.error("Failed to add program: " + p.getName());
+        else log.error("Failed to add program: " + p.getName());
         return false;
     }
 
@@ -190,19 +189,19 @@ public class DataManager
     {
         if(p == null) throw new IllegalArgumentException("ProgramData is null");
         checkReady();
-        l.info("Updating program #" + p.getId());
+        log.info("Updating program #" + p.getId());
         if(hasData(p.getId()))
         {
             int result = session.update("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.updateData", p);
             session.commit();
             if(result == 1)
             {
-                l.info("Update successful: program #" + p.getId() + " - " + p.getName());
+                log.info("Update successful: program #" + p.getId() + " - " + p.getName());
                 return true;
             }
-            else l.error("Failed to update program #" + p.getId());
+            else log.error("Failed to update program #" + p.getId());
         }
-        else l.error("Update failed: program #" + p.getId() + " not exists");
+        else log.error("Update failed: program #" + p.getId() + " not exists");
         return false;
     }
 
@@ -214,19 +213,19 @@ public class DataManager
     public static boolean deleteData(int id)
     {
         checkReady();
-        l.info("Deleting program #" + id);
+        log.info("Deleting program #" + id);
         if(hasData(id))
         {
             int result = session.update("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.deleteData", id);
             session.commit();
             if(result == 1)
             {
-                l.info("Deleted program #" + id);
+                log.info("Deleted program #" + id);
                 return true;
             }
-            else l.error("Failed to delete program #" + id);
+            else log.error("Failed to delete program #" + id);
         }
-        else l.error("Deletion failed: program #" + id + " not exists");
+        else log.error("Deletion failed: program #" + id + " not exists");
         return false;
     }
 }

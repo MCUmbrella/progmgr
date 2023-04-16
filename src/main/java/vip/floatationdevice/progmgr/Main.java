@@ -2,17 +2,16 @@ package vip.floatationdevice.progmgr;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
+@Slf4j
 public class Main
 {
     private static ConfigurableApplicationContext applicationContext;
-    private static final Logger l = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args)
     {
@@ -30,10 +29,10 @@ public class Main
                 {
                     System.exit(0);
                 }
-        l.info("PROGMGR is starting up");
+        log.info("PROGMGR is starting up");
         applicationContext = SpringApplication.run(Main.class, args);
-        l.info("PROGMGR startup completed");
-        l.info("Web interface: http://127.0.0.1:8077/SP-IMS.html");
+        log.info("PROGMGR startup completed");
+        log.info("Web interface: http://127.0.0.1:8077/SP-IMS.html");
     }
 
     public static ConfigurableApplicationContext getContext(){return applicationContext;}
@@ -47,7 +46,7 @@ public class Main
     @PreDestroy
     public void onShutdown() // will be called automatically. use Main.shutdown() instead
     {
-        l.info("PROGMGR is shutting down");
+        log.info("PROGMGR is shutting down");
     }
 
     /**

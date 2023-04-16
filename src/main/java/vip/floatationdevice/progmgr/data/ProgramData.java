@@ -1,6 +1,7 @@
 package vip.floatationdevice.progmgr.data;
 
 import cn.hutool.json.JSONObject;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -23,33 +24,12 @@ import java.util.Map;
 /**
  * Represents a show (or "program". whatever)
  */
+@Data
 public class ProgramData implements Serializable
 {
     public static final long serialVersionUID = 0L;
     private Integer id = Integer.MIN_VALUE, actorCount = Integer.MIN_VALUE;
     private String name, typeName, view, actorList;
-
-    public Integer getId(){return id;}
-
-    public Integer getActorCount(){return actorCount;}
-
-    public String getName(){return name;}
-
-    public String getTypeName(){return typeName;}
-
-    public String getView(){return view;}
-
-    public String getActorList(){return actorList;}
-
-    public void setId(Integer id){this.id = id;}
-
-    public void setActorCount(Integer actorCount){this.actorCount = actorCount;}
-
-    public void setName(String name){this.name = name;}
-
-    public void setTypeName(String typeName){this.typeName = typeName;}
-
-    public void setView(String view){this.view = view;}
 
     public void setActorList(String actorList)
     {
