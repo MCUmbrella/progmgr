@@ -9,6 +9,7 @@ import vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 
@@ -88,8 +89,10 @@ public class DataManager
     {
         log.info("Creating default database");
         File db = new File("progmgr.db");
+        InputStream is = Main.class.getResourceAsStream("/progmgr.db");
+        assert is != null;
         FileOutputStream fos = new FileOutputStream(db);
-        fos.write(Main.class.getResourceAsStream("/progmgr.db").readAllBytes());
+        fos.write(is.readAllBytes());
         fos.flush();
         fos.close();
         log.info("Database created");

@@ -11,7 +11,7 @@ package vip.floatationdevice.progmgr.data;
  * }
  * </pre>
  */
-public class CommonMapResult
+public class CommonMappedResult
 {
     public final String code;
     public final String message;
@@ -23,10 +23,17 @@ public class CommonMapResult
      * @param message The status message of the result.
      * @param data The data associated to the result.
      */
-    public CommonMapResult(int code, String message, Object data)
+    public CommonMappedResult(int code, String message, Object data)
     {
         this.code = String.valueOf(code);
         this.message = message;
         this.data = data;
+    }
+
+    public CommonMappedResult(int code, String message)
+    {
+        this.code = String.valueOf(code);
+        this.message = message;
+        this.data = null;
     }
 }
