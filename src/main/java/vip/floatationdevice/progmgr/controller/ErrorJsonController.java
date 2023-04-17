@@ -16,8 +16,7 @@ public class ErrorJsonController implements ErrorController
     {
         return new CommonMappedResult(
                 (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE),
-                (String) request.getAttribute(RequestDispatcher.ERROR_MESSAGE),
-                request.getAttribute(RequestDispatcher.ERROR_EXCEPTION)
+                (String) request.getAttribute(RequestDispatcher.ERROR_MESSAGE)
         );
     }
 }
