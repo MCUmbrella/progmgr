@@ -148,7 +148,7 @@ public class DataManager
      * @return A list containing all the ProgramData object that matches the need.
      * @throws IllegalArgumentException if you pass 3 nulls.
      */
-    public static List<ProgramData> findData(String typeName, Integer actorCount, String name)
+    public static List<ProgramData> findData(String name, String typeName, Integer actorCount)
     {
         if(typeName == null && actorCount == null && name == null)
             throw new IllegalArgumentException("so what the actual fuck do you want to search for? goddamn motherfucking asshole");

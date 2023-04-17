@@ -27,20 +27,20 @@
             <el-dialog title="新增节目" :visible.sync="isAdd">
                 <el-form :model="addForm">
                     <el-form-item label="类别">
-                        <el-select v-model="addForm.category" placeholder="请选择">
+                        <el-select v-model="addForm.typeName" placeholder="请选择">
                             <el-option v-for="item in cateOptions" :key="item.value" :label="item.label"
                                 :value="item.value">
                             </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="节目名">
-                        <el-input v-model="addForm.program" placeholder="请输入内容"></el-input>
+                        <el-input v-model="addForm.name" placeholder="请输入内容"></el-input>
                     </el-form-item>
                     <el-form-item label="演员">
-                        <el-input v-model="addForm.actor" placeholder="请输入内容"></el-input>
+                        <el-input v-model="addForm.actorList" placeholder="请输入内容"></el-input>
                     </el-form-item>
                     <el-form-item label="看点">
-                        <el-input v-model="addForm.point" placeholder="请输入内容"></el-input>
+                        <el-input v-model="addForm.view" placeholder="请输入内容"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -52,20 +52,20 @@
             <el-dialog title="编辑节目" :visible.sync="isEdit">
                 <el-form :model="editForm">
                     <el-form-item label="类别">
-                        <el-select v-model="editForm.category" placeholder="请选择">
+                        <el-select v-model="editForm.typeName" placeholder="请选择">
                             <el-option v-for="item in cateOptions" :key="item.value" :label="item.label"
                                 :value="item.value">
                             </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="节目名">
-                        <el-input v-model="editForm.program" placeholder="请输入内容"></el-input>
+                        <el-input v-model="editForm.name" placeholder="请输入内容"></el-input>
                     </el-form-item>
                     <el-form-item label="演员">
-                        <el-input v-model="editForm.actor" placeholder="请输入内容"></el-input>
+                        <el-input v-model="editForm.actorList" placeholder="请输入内容"></el-input>
                     </el-form-item>
                     <el-form-item label="看点">
-                        <el-input v-model="editForm.point" placeholder="请输入内容"></el-input>
+                        <el-input v-model="editForm.view" placeholder="请输入内容"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -79,7 +79,7 @@
                 <div class="search-box">
                     <div class="onebox">
                         <span>类别</span>
-                        <select name="jiemu" id="" v-model="searchForm.category">
+                        <select name="jiemu" id="" v-model="searchForm.typeName">
                             <option selected disabled>请选择</option>
                             <option value="歌舞">歌舞</option>
                             <option value="戏曲">戏曲</option>
@@ -91,14 +91,14 @@
                     </div>
                     <div class="onebox">
                         <span>参演人数</span>
-                        <input type="radio" name="number" value=1 v-model="searchForm.actorNum" /> 1人
-                        <input type="radio" name="number" value=2 v-model="searchForm.actorNum" /> 2人
-                        <input type="radio" name="number" value=3 v-model="searchForm.actorNum" /> 3人及以上
+                        <input type="radio" name="number" value=1 v-model="searchForm.actorCount" /> 1人
+                        <input type="radio" name="number" value=2 v-model="searchForm.actorCount" /> 2人
+                        <input type="radio" name="number" value=3 v-model="searchForm.actorCount" /> 3人及以上
                     </div>
                     <div class="onebox">
                         <span>节目名</span>
                         <input type="text" class="name" name="jiemu-name" placeholder="请输入节目名"
-                            v-model="searchForm.program" />
+                            v-model="searchForm.name" />
                     </div>
                     <div class="onebox" id="rightbox">
                         <input type="submit" class="btn" id="search" value="搜索" @click="search(searchForm)" />
