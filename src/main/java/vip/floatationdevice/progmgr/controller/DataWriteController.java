@@ -20,7 +20,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class DataWriteController
 {
     @PostMapping(value = "/add/program", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public CommonMappedResult actionInsertProgram(@RequestBody @Validated ProgramData data, HttpServletRequest request, HttpServletResponse response) throws Exception
+    public CommonMappedResult actionInsertData(@RequestBody @Validated ProgramData data, HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         DataManager.insertData(ProgramData.fromJson(new JSONObject(data)));
         response.setStatus(201);
@@ -28,7 +28,7 @@ public class DataWriteController
     }
 
     @PostMapping(value = "/delete/program", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public CommonMappedResult actionDeleteProgram(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, HttpServletResponse response) throws Exception
+    public CommonMappedResult actionDeleteData(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         Object id = requestBody.get("id");
         if(id != null)
@@ -49,7 +49,7 @@ public class DataWriteController
     }
 
     @PostMapping(value = "/update/program", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public CommonMappedResult actionUpdateProgram(@RequestBody @Validated ProgramData data, HttpServletRequest request, HttpServletResponse response) throws Exception
+    public CommonMappedResult actionUpdateData(@RequestBody @Validated ProgramData data, HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         if(data.getId() != null)
         {

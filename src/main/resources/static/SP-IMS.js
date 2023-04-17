@@ -2,13 +2,26 @@ var v1 = new Vue({
   el: "#app1",
   methods: {
     handleClick(row) {
-      console.log(row);
+      //console.log(row);
+    },
+    changeArrToStr(arr) {
+      let newArr = [];
+      arr.forEach((item) => newArr.push(item.name));
+      return newArr.join(",");
+    },
+    pageChange(pageNum) {
+      //console.log(pageNum);
+      if (pageNum <= 0) {
+        return;
+      } else {
+        this.getData(pageNum);
+      }
     },
 
     async getData(pageNum) {
       const { data: res } = await axios({
         method: "get",
-        url: "/get/programList",
+        url: "/api/program",
         params: {
           pageNum,
         },
@@ -21,22 +34,33 @@ var v1 = new Vue({
       //   item.actorList = this.changeArrToStr(item.actorList);
       // });
 
-      this.tableData = res.data.programResults;
-      console.log(this.tableData)
+      this.tableData = res.data;
+      //console.log(this.tableData)
     },
-    changeArrToStr(arr) {
-      let newArr = [];
-      arr.forEach((item) => newArr.push(item.name));
-      return newArr.join(",");
+
+    async search(searchForm) {
+      const { data: res } = await axios({
+        method: "get",
+        url: "/api/search",
+        params: {
+          type: searchForm.typeName,
+          num: searchForm.actorNum,
+          name: searchForm.name
+        },
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+      //console.log(res)
+      // res.data.forEach((item) => {
+      //   item.actorList = this.changeArrToStr(item.actorList);
+      // });
+
+      this.tableData = res.data;
+      //console.log(res.data.programSearchResults)
+      //console.log(this.tableData)
     },
-    pageChange(pageNum) {
-      console.log(pageNum);
-      if (pageNum <= 0) {
-        return;
-      } else {
-        this.getData(pageNum);
-      }
-    },
+
     add() {
       this.isAdd = true
     },
@@ -58,7 +82,7 @@ var v1 = new Vue({
           "content-type": "application/json",
         },
       });
-      console.log(res)
+      //console.log(res)
       if (res.code == '0') {
         this.getData(this.pageNum);
         this.$message({
@@ -70,6 +94,7 @@ var v1 = new Vue({
       }
 
     },
+
     edit(row) {
       this.editForm.id = row.id
       this.editForm.typeName = row.typeName
@@ -97,7 +122,7 @@ var v1 = new Vue({
           "content-type": "application/json",
         },
       });
-      console.log(res)
+      //console.log(res)
       if (res.code == '0') {
         this.getData(this.pageNum);
         this.$message({
@@ -109,28 +134,7 @@ var v1 = new Vue({
       }
 
     },
-    async search(searchForm) {
-      const { data: res } = await axios({
-        method: "get",
-        url: "/get/search",
-        params: {
-          type: searchForm.typeName,
-          num: searchForm.actorNum,
-          name: searchForm.name
-        },
-        headers: {
-          "content-type": "application/json",
-        },
-      });
-      //console.log(res)
-      // res.data.forEach((item) => {
-      //   item.actorList = this.changeArrToStr(item.actorList);
-      // });
 
-      this.tableData = res.data.programSearchResults;
-      //console.log(res.data.programSearchResults)
-      //console.log(this.tableData)
-    },
     async deleteData(index) {
       const { data: res } = await axios({
         method: "post",
@@ -142,7 +146,7 @@ var v1 = new Vue({
           "content-type": "application/json",
         },
       });
-      console.log(res)
+      //console.log(res)
       if (res.code == '0') {
         this.getData(this.pageNum);
         this.$message({
@@ -154,6 +158,7 @@ var v1 = new Vue({
       }
     },
   },
+
   data() {
     return {
       cateOptions: [{
@@ -175,7 +180,6 @@ var v1 = new Vue({
         value: '其他',
         label: '其他'
       }],
-
       addForm: {
         typeName: null,
         name: null,
@@ -200,6 +204,7 @@ var v1 = new Vue({
       pageNum: 1,
     };
   },
+
   created() {
     this.getData(this.pageNum);
   },

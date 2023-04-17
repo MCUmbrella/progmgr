@@ -3,6 +3,7 @@ package vip.floatationdevice.progmgr.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vip.floatationdevice.progmgr.DataManager;
@@ -14,22 +15,26 @@ import java.util.HashMap;
 @RestController
 public class DataReadController
 {
-    @GetMapping("/get/programCount")
+    @GetMapping("/api/programCount")
     public CommonMappedResult actionGetDataCount()
     {
         return new CommonMappedResult(0, "OK", DataManager.getDataCount());
     }
 
-    @GetMapping("/get/programList")
-    public CommonMappedResult actionGetPagedData(HttpServletRequest request, HttpServletResponse response, @RequestParam(name = "pageNum") Integer pageNum) throws Exception
+    @GetMapping("/api/program")
+    public CommonMappedResult actionGetPagedData(
+            HttpServletRequest request, HttpServletResponse response,
+            @RequestParam(name = "pageNum") Integer pageNum
+    ) throws Exception
     {
-        HashMap<String, Object> programResults = new HashMap<>();
-        programResults.put("programResults", DataManager.getPagedData(pageNum - 1));
-        return new CommonMappedResult(0, "OK", programResults);
+        return new CommonMappedResult(0, "OK", DataManager.getPagedData(pageNum - 1));
     }
 
-    @GetMapping("/get/program")
-    public CommonMappedResult actionGetData(HttpServletRequest request, HttpServletResponse response, @RequestParam(name = "id") Integer id) throws Exception
+    @GetMapping("/api/program/{id}")
+    public CommonMappedResult actionGetData(
+            HttpServletRequest request, HttpServletResponse response,
+            @PathVariable("id") Integer id
+    ) throws Exception
     {
         if(DataManager.hasData(id))
         {
@@ -41,7 +46,7 @@ public class DataReadController
         return null;
     }
 
-    @GetMapping("/get/search")
+    @GetMapping("/api/search")
     public CommonMappedResult actionFindData(
             HttpServletRequest request, HttpServletResponse response,
             @RequestParam(name = "type", required = false) String type,
@@ -59,8 +64,6 @@ public class DataReadController
             response.sendError(400, "Name is empty");
             return null;
         }
-        HashMap<String, Object> programSearchResults = new HashMap<>();
-        programSearchResults.put("programSearchResults", DataManager.findData(type, num, name));
-        return new CommonMappedResult(0, "OK", programSearchResults);
+        return new CommonMappedResult(0, "OK", DataManager.findData(type, num, name));
     }
 }
