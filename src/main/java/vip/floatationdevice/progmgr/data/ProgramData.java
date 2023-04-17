@@ -31,9 +31,21 @@ public class ProgramData implements Serializable
 
     public void setActorList(String actorList)
     {
-        this.actorList = actorList;
-        this.actorCount = actorList.split("[\\uFF0C,]").length;
+        String[] actors = actorList.split("[\\uFF0C,]");
+        StringBuilder actorsListFormatted = new StringBuilder();
+        int actorCount = 0;
+        for(String s : actors)
+            if(!s.isBlank())
+            {
+                actorsListFormatted.append(s.trim()).append(',');
+                actorCount++;
+            }
+        if(actorsListFormatted.length() != 0) actorsListFormatted.deleteCharAt(actorsListFormatted.length() - 1);
+        this.actorList = actorsListFormatted.toString();
+        this.actorCount = actorCount;
     }
+
+    public void setActorCount(int actorCount){}
 
     /**
      * Use: converting data from the front-end.
@@ -41,22 +53,11 @@ public class ProgramData implements Serializable
     public static ProgramData fromJson(JSONObject j)
     {
         ProgramData p = new ProgramData();
-        String[] actors = j.getStr("actorList").split("[\\uFF0C,]");
-        StringBuilder actorsList = new StringBuilder();
-        int actorCount = 0;
-        for(String s : actors)
-            if(!s.isBlank())
-            {
-                actorsList.append(s.trim()).append(',');
-                actorCount++;
-            }
-        if(actorsList.length() != 0) actorsList.deleteCharAt(actorsList.length() - 1);
         p.setId(j.getInt("id"));
         p.setTypeName(j.getStr("typeName").trim());
         p.setName(j.getStr("name").trim());
         p.setView(j.getStr("view").trim());
-        p.setActorList(actorsList.toString());
-        p.setActorCount(actorCount);
+        p.setActorList(j.getStr("actorList"));
         return p;
     }
 
