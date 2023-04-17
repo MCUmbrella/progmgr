@@ -99,7 +99,7 @@ Example response: (`GET /api/search?name=Pro&actorCount=2`)
 
 ## Write
 ### Create program
-Method & URL: `POST /add/program`
+Method & URL: `POST /api/program`
 
 JSON parameters:
 - name: String (required)
