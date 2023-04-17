@@ -5,7 +5,7 @@ http://127.0.0.1:8077/SP-IMS.html
 
 # API
 ## Read
-### Program count
+### Get program count
 Method & URL: `GET /api/programCount`
 
 Example response:
@@ -17,10 +17,10 @@ Example response:
 }
 ```
 
-### Program list (max 5 per page)
+### Get paged program list (max 5 per page)
 Method & URL: `GET /api/program`
 
-Parameters:
+Query parameters:
 - pageNum: Integer (required)
 
 Example response: (`GET /api/program?pageNum=1`)
@@ -49,10 +49,10 @@ Example response: (`GET /api/program?pageNum=1`)
 }
 ```
 
-### Program information
+### Get single program data
 Method & URL: `GET /api/program/{id}`
 
-Parameters:
+URL parameters:
 - id: Integer (required)
 
 Example response: (`GET /api/program/2`)
@@ -71,7 +71,7 @@ Example response: (`GET /api/program/2`)
 }
 ```
 
-### Program search
+### Search
 Method & URL: `GET /api/search`
 
 Query parameters: (provide at least one)
@@ -84,18 +84,16 @@ Example response: (`GET /api/search?name=Pro&actorCount=2`)
 {
   "code": "0",
   "message": "OK",
-  "data": {
-    "programSearchResults": [
-      {
-        "id": 2,
-        "actorCount": 2,
-        "name": "Prog1",
-        "typeName": "相声",
-        "view": "description",
-        "actorList": "actor1,actor2"
-      }
-    ]
-  }
+  "data": [
+    {
+      "id": 2,
+      "actorCount": 2,
+      "name": "Prog1",
+      "typeName": "相声",
+      "view": "description",
+      "actorList": "actor1,actor2"
+    }
+  ]
 }
 ```
 
@@ -142,7 +140,7 @@ Example response:
 ### Delete program
 Method & URL: `DELETE /api/program/{id}`
 
-Parameters:
+URL parameters:
 - id: Integer (required)
 
 Example response: (`DELETE /api/program/1`)
