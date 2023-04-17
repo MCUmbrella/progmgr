@@ -19,11 +19,11 @@
 
 
 <body>
-    <div id="app1">
+    <div id="app1" style="background-color: white; padding: 20px; border: 3px solid">
         <div class="content">
             <h1>2023春节联欢晚会节目单</h1>
             <button class="btn" @click="add">新增</button>
-
+            <input type="submit" class="btn" id="search" value="搜索" @click="search(searchForm)" />
             <el-dialog title="新增节目" :visible.sync="isAdd">
                 <el-form :model="addForm">
                     <el-form-item label="类别">
@@ -79,7 +79,7 @@
                 <div class="search-box">
                     <div class="onebox">
                         <span>类别</span>
-                        <select name="jiemu" id="" v-model="searchForm.typeName">
+                        <select name="jiemu" id="" v-model="searchForm.typeName" style="width:350px">
                             <option selected disabled>请选择</option>
                             <option value="歌舞">歌舞</option>
                             <option value="戏曲">戏曲</option>
@@ -98,28 +98,29 @@
                     <div class="onebox">
                         <span>节目名</span>
                         <input type="text" class="name" name="jiemu-name" placeholder="请输入节目名"
-                            v-model="searchForm.name" />
-                    </div>
-                    <div class="onebox" id="rightbox">
-                        <input type="submit" class="btn" id="search" value="搜索" @click="search(searchForm)" />
+                            v-model="searchForm.name" style="width:320px" />
                     </div>
                 </div>
                 <div class="result-area">
                     <h2>搜索结果</h2>
-                    <div class="result-content">
+                    <div class="result-content" style="width: 100%">
 
                         <template>
+                            <el-pagination background layout="prev, pager, next" :total="100" @prev-click="pageChange"
+                                           @next-click="pageChange" @current-change="pageChange">
+                            </el-pagination>
+
                             <el-table :data="tableData" style="width: 100%">
                                 <el-table-column fixed="left" prop="id" label="id" width="50">
                                 </el-table-column>
-                                <el-table-column prop="typeName" label="类别" width="80">
+                                <el-table-column prop="typeName" label="类别" width="100">
                                 </el-table-column>
-                                <el-table-column prop="name" label="节目名" width="130">
+                                <el-table-column prop="name" label="节目名">
                                 </el-table-column>
-                                <el-table-column prop="actorList" label="出演者" width="200">
+                                <el-table-column prop="actorList" label="出演者">
                                     <li></li>
                                 </el-table-column>
-                                <el-table-column prop="view" label="看点" width="200">
+                                <el-table-column prop="view" label="看点">
                                 </el-table-column>
                                 <el-table-column fixed="right" label="操作" width="100">
                                     <template slot-scope="scope">
@@ -129,10 +130,6 @@
                                     </template>
                                 </el-table-column>
                             </el-table>
-
-                            <el-pagination background layout="prev, pager, next" :total="100" @prev-click="pageChange"
-                                @next-click="pageChange" @current-change="pageChange">
-                            </el-pagination>
 
                         </template>
 
