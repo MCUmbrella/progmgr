@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import vip.floatationdevice.progmgr.DataManager;
 import vip.floatationdevice.progmgr.data.CommonMappedResult;
 
-import java.util.HashMap;
-
 @SuppressWarnings("unused")
 @RestController
 public class DataReadController
@@ -37,11 +35,7 @@ public class DataReadController
     ) throws Exception
     {
         if(DataManager.hasData(id))
-        {
-            HashMap<String, Object> program = new HashMap<>();
-            program.put("program", DataManager.getData(id));
-            return new CommonMappedResult(0, "OK", program);
-        }
+            return new CommonMappedResult(0, "OK", DataManager.getData(id));
         response.sendError(404, "Program with ID " + id + " not exists");
         return null;
     }
@@ -49,12 +43,12 @@ public class DataReadController
     @GetMapping("/api/search")
     public CommonMappedResult actionFindData(
             HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(name = "type", required = false) String type,
-            @RequestParam(name = "num", required = false) Integer num,
-            @RequestParam(name = "name", required = false) String name
+            @RequestParam(name = "name", required = false) String name,
+            @RequestParam(name = "typeName", required = false) String typeName,
+            @RequestParam(name = "actorCount", required = false) Integer actorCount
     ) throws Exception
     {
-        if(type == null && num == null && name == null)
+        if(name == null && typeName == null && actorCount == null)
         {
             response.sendError(400, "Missing parameter");
             return null;
@@ -64,6 +58,6 @@ public class DataReadController
             response.sendError(400, "Name is empty");
             return null;
         }
-        return new CommonMappedResult(0, "OK", DataManager.findData(type, num, name));
+        return new CommonMappedResult(0, "OK", DataManager.findData(name, typeName, actorCount));
     }
 }

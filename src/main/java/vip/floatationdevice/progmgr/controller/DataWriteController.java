@@ -20,7 +20,7 @@ public class DataWriteController
     {
         DataManager.insertData(ProgramData.fromJson(new JSONObject(data)));
         response.setStatus(201);
-        return new CommonMappedResult(0, "OK");
+        return new CommonMappedResult(0, "Program created");
     }
 
     @DeleteMapping(value = "/api/program/{id}", produces = APPLICATION_JSON_VALUE)
@@ -32,7 +32,7 @@ public class DataWriteController
         if(DataManager.hasData(id))
         {
             DataManager.deleteData(id);
-            return new CommonMappedResult(0, "OK");
+            return new CommonMappedResult(0, "Program deleted");
         }
         else response.sendError(404, "Program with ID " + id + " not exists");
         return null;
@@ -49,7 +49,7 @@ public class DataWriteController
         {
             data.setId(id);
             DataManager.updateData(data);
-            return new CommonMappedResult(0, "OK");
+            return new CommonMappedResult(0, "Program updated");
         }
         else response.sendError(404, "Program with ID " + data.getId() + " not exists");
         return null;

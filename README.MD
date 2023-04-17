@@ -6,7 +6,7 @@ http://127.0.0.1:8077/SP-IMS.html
 # API
 ## Read
 ### Program count
-Method & URL: `GET /get/programCount`
+Method & URL: `GET /api/programCount`
 
 Example response:
 ```json
@@ -18,72 +18,68 @@ Example response:
 ```
 
 ### Program list (max 5 per page)
-Method & URL: `GET /get/programList`
+Method & URL: `GET /api/program`
 
 Parameters:
 - pageNum: Integer (required)
 
-Example response:
+Example response: (`GET /api/program?pageNum=1`)
 ```json
 {
   "code": "0",
   "message": "OK",
-  "data": {
-    "programResults": [
-      {
-        "id": 1,
-        "actorCount": 1,
-        "name": "Prog0",
-        "typeName": "Dance",
-        "view": "description",
-        "actorList": "actor1"
-      },
-      {
-        "id": 2,
-        "actorCount": 2,
-        "name": "Prog1",
-        "typeName": "Other",
-        "view": "description",
-        "actorList": "actor1,actor2"
-      }
-    ]
-  }
+  "data": [
+    {
+      "id": 1,
+      "actorCount": 1,
+      "name": "Prog0",
+      "typeName": "戏曲",
+      "view": "description",
+      "actorList": "actor1"
+    },
+    {
+      "id": 2,
+      "actorCount": 2,
+      "name": "Prog1",
+      "typeName": "相声",
+      "view": "description",
+      "actorList": "actor1,actor2"
+    }
+  ]
 }
 ```
 
 ### Program information
-Method & URL: `GET /get/program`
+Method & URL: `GET /api/program/{id}`
 
 Parameters:
 - id: Integer (required)
 
-Example response:
+Example response: (`GET /api/program/2`)
 ```json
 {
     "code": "0",
     "message": "OK",
     "data": {
-        "program": {
-            "id": 2,
-            "actorCount": 2,
-            "name": "Prog1",
-            "typeName": "Other",
-            "view": "description",
-            "actorList": "actor1,actor2"
-        }
+      "id": 2,
+      "actorCount": 2,
+      "name": "Prog1",
+      "typeName": "相声",
+      "view": "description",
+      "actorList": "actor1,actor2"
     }
 }
 ```
 
 ### Program search
-Method & URL: `GET /get/search`
+Method & URL: `GET /api/search`
 
-Parameters: (provide at least one)
-- type: String
-- num: Integer
-- name: String
+Query parameters: (provide at least one)
+- name: String, optional*
+- typeName: String, optional*
+- actorCount: Integer, optional*
 
-Example response:
+Example response: (`GET /api/search?name=Pro&actorCount=2`)
 ```json
 {
   "code": "0",
@@ -94,7 +90,7 @@ Example response:
         "id": 2,
         "actorCount": 2,
         "name": "Prog1",
-        "typeName": "Other",
+        "typeName": "相声",
         "view": "description",
         "actorList": "actor1,actor2"
       }
@@ -109,49 +105,51 @@ Method & URL: `POST /add/program`
 
 JSON parameters:
 - name: String (required)
-- type: String (required)
-- actors: String (required)
-- point: String (required)
+- typeName: String (required)
+- actorList: String (required)
+- view: String (required)
 
 Example response:
 ```json
 {
   "code": "0",
-  "message": "OK",
+  "message": "Program created",
   "data": null
 }
 ```
 
 ### Update program
-Method & URL: `POST /update/program`
+Method & URL: `PUT /api/program/{id}`
+
+URL parameters:
+- id: Integer (required)
 
 JSON parameters:
-- id: Integer (required)
 - name: String (required)
-- type: String (required)
-- actors: String (required)
-- point: String (required)
+- typeName: String (required)
+- actorList: String (required)
+- view: String (required)
 
 Example response:
 ```json
 {
   "code": "0",
-  "message": "OK",
+  "message": "Program updated",
   "data": null
 }
 ```
 
 ### Delete program
-Method & URL: `POST /delete/program`
+Method & URL: `DELETE /api/program/{id}`
 
-JSON parameters:
+Parameters:
 - id: Integer (required)
 
-Example response:
+Example response: (`DELETE /api/program/1`)
 ```json
 {
   "code": "0",
-  "message": "OK",
+  "message": "Program deleted",
   "data": null
 }
 ```

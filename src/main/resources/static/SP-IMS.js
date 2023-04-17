@@ -43,9 +43,9 @@ var v1 = new Vue({
         method: "get",
         url: "/api/search",
         params: {
-          type: searchForm.typeName,
-          num: searchForm.actorNum,
-          name: searchForm.name
+          name: searchForm.name,
+          typeName: searchForm.typeName,
+          actorCount: searchForm.actorCount
         },
         headers: {
           "content-type": "application/json",
