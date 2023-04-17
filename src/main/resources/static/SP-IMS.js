@@ -16,7 +16,7 @@ var v1 = new Vue({
           "content-type": "application/json",
         },
       });
-      console.log(res.data.programResults)
+      //console.log(res.data.programResults)
       // res.data.forEach((item) => {
       //   item.actorList = this.changeArrToStr(item.actorList);
       // });
@@ -49,10 +49,10 @@ var v1 = new Vue({
         method: "post",
         url: "/add/program",
         data: {
-          type: addForm.category,
-          name: addForm.program,
-          actors: addForm.actor,
-          point: addForm.point
+          typeName: addForm.typeName,
+          name: addForm.name,
+          actorList: addForm.actorList,
+          view: addForm.view
         },
         headers: {
           "content-type": "application/json",
@@ -71,11 +71,11 @@ var v1 = new Vue({
 
     },
     edit(row) {
-      this.editForm.programId = row.id
-      this.editForm.category = row.typeName
-      this.editForm.program = row.name
-      this.editForm.actor = row.actorList
-      this.editForm.point = row.view
+      this.editForm.id = row.id
+      this.editForm.typeName = row.typeName
+      this.editForm.name = row.name
+      this.editForm.actorList = row.actorList
+      this.editForm.view = row.view
       this.isEdit = true
     },
     editConfirm() {
@@ -87,11 +87,11 @@ var v1 = new Vue({
         method: "post",
         url: "/update/program",
         data: {
-          id: editForm.programId,
-          type: editForm.category,
-          name: editForm.program,
-          actors: editForm.actor,
-          point: editForm.point
+          id: editForm.id,
+          typeName: editForm.typeName,
+          name: editForm.name,
+          actorList: editForm.actorList,
+          view: editForm.view
         },
         headers: {
           "content-type": "application/json",
@@ -114,22 +114,22 @@ var v1 = new Vue({
         method: "get",
         url: "/get/search",
         params: {
-          type: searchForm.category,
+          type: searchForm.typeName,
           num: searchForm.actorNum,
-          name: searchForm.program
+          name: searchForm.name
         },
         headers: {
           "content-type": "application/json",
         },
       });
-      console.log(res)
+      //console.log(res)
       // res.data.forEach((item) => {
       //   item.actorList = this.changeArrToStr(item.actorList);
       // });
 
       this.tableData = res.data.programSearchResults;
-      console.log(res.data.programSearchResults)
-      console.log(this.tableData)
+      //console.log(res.data.programSearchResults)
+      //console.log(this.tableData)
     },
     async deleteData(index) {
       const { data: res } = await axios({
@@ -152,7 +152,6 @@ var v1 = new Vue({
       } else {
         this.$message.error(res.message);
       }
-
     },
   },
   data() {
@@ -178,21 +177,21 @@ var v1 = new Vue({
       }],
 
       addForm: {
-        category: null,
-        program: null,
-        actor: null,
-        point: null
+        typeName: null,
+        name: null,
+        actorList: null,
+        view: null
       },
       searchForm: {
-        category: null,
+        typeName: null,
         actorNum: null,
-        program: null,
+        name: null,
       },
       editForm: {
-        category: null,
-        program: null,
-        actor: null,
-        point: null
+        typeName: null,
+        name: null,
+        actorList: null,
+        view: null
       },
       value: '',
       isEdit: false,

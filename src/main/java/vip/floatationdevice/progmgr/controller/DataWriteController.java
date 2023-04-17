@@ -23,13 +23,13 @@ public class DataWriteController
     @PostMapping(value = "/add/program", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public CommonMappedResult actionInsertProgram(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, HttpServletResponse response) throws Exception
     {
-        Object type = requestBody.get("type"), name = requestBody.get("name"), point = requestBody.get("point"), actors = requestBody.get("actors");
-        if(!hasNull(type, name, point, actors))
+        Object name = requestBody.get("name"), typeName = requestBody.get("typeName"), actorList = requestBody.get("actorList"), view = requestBody.get("view");
+        if(!hasNull(name, typeName, actorList, view))
         {
-            if(type instanceof String &&
-                    name instanceof String &&
-                    point instanceof String &&
-                    actors instanceof String
+            if(name instanceof String &&
+                    typeName instanceof String &&
+                    actorList instanceof String &&
+                    view instanceof String
             )
             {
                 if(!isBlank(name))
@@ -69,14 +69,14 @@ public class DataWriteController
     @PostMapping(value = "/update/program", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public CommonMappedResult actionUpdateProgram(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, HttpServletResponse response) throws Exception
     {
-        Object id = requestBody.get("id"), type = requestBody.get("type"), name = requestBody.get("name"), point = requestBody.get("point"), actors = requestBody.get("actors");
-        if(!hasNull(id, type, name, point, actors))
+        Object id = requestBody.get("id"), name = requestBody.get("name"), typeName = requestBody.get("typeName"), actorList = requestBody.get("actorList"), view = requestBody.get("view");
+        if(!hasNull(id, name, typeName, actorList, view))
         {
             if(id instanceof Integer &&
-                    type instanceof String &&
                     name instanceof String &&
-                    point instanceof String &&
-                    actors instanceof String
+                    typeName instanceof String &&
+                    actorList instanceof String &&
+                    view instanceof String
             )
             {
                 if(!isBlank(name))
