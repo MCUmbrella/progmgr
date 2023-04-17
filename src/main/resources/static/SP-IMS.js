@@ -71,7 +71,7 @@ var v1 = new Vue({
     async addData(addForm) {
       const { data: res } = await axios({
         method: "post",
-        url: "/add/program",
+        url: "/api/program",
         data: {
           typeName: addForm.typeName,
           name: addForm.name,
@@ -109,10 +109,9 @@ var v1 = new Vue({
     },
     async editData(editForm) {
       const { data: res } = await axios({
-        method: "post",
-        url: "/update/program",
+        method: "put",
+        url: "/api/program/" + editForm.id,
         data: {
-          id: editForm.id,
           typeName: editForm.typeName,
           name: editForm.name,
           actorList: editForm.actorList,
@@ -135,16 +134,10 @@ var v1 = new Vue({
 
     },
 
-    async deleteData(index) {
+    async deleteData(id) {
       const { data: res } = await axios({
-        method: "post",
-        url: "/delete/program",
-        data: {
-          id: index
-        },
-        headers: {
-          "content-type": "application/json",
-        },
+        method: "delete",
+        url: "/api/program/" + id
       });
       //console.log(res)
       if (res.code == '0') {

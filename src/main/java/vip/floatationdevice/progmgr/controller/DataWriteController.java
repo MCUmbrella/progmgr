@@ -4,14 +4,10 @@ import cn.hutool.json.JSONObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vip.floatationdevice.progmgr.DataManager;
 import vip.floatationdevice.progmgr.data.CommonMappedResult;
 import vip.floatationdevice.progmgr.data.ProgramData;
-
-import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -19,7 +15,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 public class DataWriteController
 {
-    @PostMapping(value = "/add/program", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/api/program", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public CommonMappedResult actionInsertData(@RequestBody @Validated ProgramData data, HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         DataManager.insertData(ProgramData.fromJson(new JSONObject(data)));
@@ -27,40 +23,35 @@ public class DataWriteController
         return new CommonMappedResult(0, "OK");
     }
 
-    @PostMapping(value = "/delete/program", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public CommonMappedResult actionDeleteData(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, HttpServletResponse response) throws Exception
+    @DeleteMapping(value = "/api/program/{id}", produces = APPLICATION_JSON_VALUE)
+    public CommonMappedResult actionDeleteData(
+            HttpServletRequest request, HttpServletResponse response,
+            @PathVariable("id") Integer id
+    ) throws Exception
     {
-        Object id = requestBody.get("id");
-        if(id != null)
+        if(DataManager.hasData(id))
         {
-            if(id instanceof Integer)
-            {
-                if(DataManager.hasData((int) id))
-                {
-                    DataManager.deleteData((int) id);
-                    return new CommonMappedResult(0, "OK");
-                }
-                else response.sendError(404, "Program with ID " + id + " not exists");
-            }
-            else response.sendError(400, "Invalid parameter type");
+            DataManager.deleteData(id);
+            return new CommonMappedResult(0, "OK");
         }
-        else response.sendError(400, "Missing parameter");
+        else response.sendError(404, "Program with ID " + id + " not exists");
         return null;
     }
 
-    @PostMapping(value = "/update/program", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public CommonMappedResult actionUpdateData(@RequestBody @Validated ProgramData data, HttpServletRequest request, HttpServletResponse response) throws Exception
+    @PutMapping(value = "/api/program/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public CommonMappedResult actionUpdateData(
+            HttpServletRequest request, HttpServletResponse response,
+            @RequestBody @Validated ProgramData data,
+            @PathVariable("id") Integer id
+    ) throws Exception
     {
-        if(data.getId() != null)
+        if(DataManager.hasData(id))
         {
-            if(DataManager.hasData(data.getId()))
-            {
-                DataManager.updateData(data);
-                return new CommonMappedResult(0, "OK");
-            }
-            else response.sendError(404, "Program with ID " + data.getId() + " not exists");
+            data.setId(id);
+            DataManager.updateData(data);
+            return new CommonMappedResult(0, "OK");
         }
-        else response.sendError(400, "Missing parameter");
+        else response.sendError(404, "Program with ID " + data.getId() + " not exists");
         return null;
     }
 }
