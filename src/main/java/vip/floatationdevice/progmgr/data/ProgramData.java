@@ -1,6 +1,8 @@
 package vip.floatationdevice.progmgr.data;
 
 import cn.hutool.json.JSONObject;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -12,8 +14,20 @@ import java.io.Serializable;
 public class ProgramData implements Serializable
 {
     public static final long serialVersionUID = 0L;
-    private Integer id = Integer.MIN_VALUE, actorCount = Integer.MIN_VALUE;
-    private String name, typeName, view, actorList;
+    private Integer id = null, actorCount = Integer.MIN_VALUE;
+
+    @NotNull(message = "'name' is missing")
+    @NotBlank(message = "'name' is blank")
+    private String name;
+    @NotNull(message = "'typeName' is missing")
+    @NotBlank(message = "'typeName' is blank")
+    private String typeName;
+    @NotNull(message = "'view' is missing")
+    @NotBlank(message = "'view' is blank")
+    private String view;
+    @NotNull(message = "'actorList' is missing")
+    @NotBlank(message = "'actorList' is blank")
+    private String actorList;
 
     public void setActorList(String actorList)
     {
