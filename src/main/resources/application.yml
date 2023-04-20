@@ -8,8 +8,8 @@ spring:
   application:
     name: PROGMGR
   datasource:
-    driver-class-name: "org.sqlite.JDBC"
-    url: "jdbc:sqlite:progmgr.db"
+    driver-class-name: "com.mysql.cj.jdbc.Driver"
+    url: "jdbc:mysql://127.0.0.1:63306/progmgr?user=user0&password=A1145141919810a_"
 
 mybatis:
   mapper-locations: "classpath:/mapper/*.xml"

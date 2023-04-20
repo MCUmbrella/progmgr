@@ -25,20 +25,6 @@ public class Main
 
     public static void main(String[] args)
     {
-        for(String a : args)
-            if("--fixdb".equals(a))
-                try
-                {
-                    DataManager.resetDatabase();
-                }
-                catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
-                finally
-                {
-                    System.exit(0);
-                }
         log.info("PROGMGR is starting up");
         applicationContext = SpringApplication.run(Main.class, args);
         log.info("PROGMGR startup completed");
