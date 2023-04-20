@@ -3,15 +3,25 @@ package vip.floatationdevice.progmgr;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper;
 
+@MapperScan("vip.floatationdevice.progmgr.sqlmapper")
 @SpringBootApplication
 @Slf4j
 public class Main
 {
     private static ConfigurableApplicationContext applicationContext;
+    private static ProgramDataMapper mapper;
+
+    public Main(ProgramDataMapper mapper, ConfigurableApplicationContext applicationContext)
+    {
+        Main.mapper = mapper;
+        Main.applicationContext = applicationContext;
+    }
 
     public static void main(String[] args)
     {
@@ -36,6 +46,8 @@ public class Main
     }
 
     public static ConfigurableApplicationContext getContext(){return applicationContext;}
+
+    public static ProgramDataMapper getMapper(){return mapper;}
 
     @PostConstruct
     public void onStartup() // will be called automatically

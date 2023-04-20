@@ -7,3 +7,11 @@ server:
 spring:
   application:
     name: PROGMGR
+  datasource:
+    driver-class-name: "org.sqlite.JDBC"
+    url: "jdbc:sqlite:progmgr.db"
+
+mybatis:
+  mapper-locations: "classpath:/mapper/*.xml"
+  configuration:
+    map-underscore-to-camel-case: true

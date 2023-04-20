@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper">
+
+    <select id="getDataCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM programs
+    </select>
+
+    <select id="getAllData" resultType="vip.floatationdevice.progmgr.data.ProgramData">
+        SELECT * FROM programs
+    </select>
+
+    <select id="getPagedData" resultType="vip.floatationdevice.progmgr.data.ProgramData">
+        SELECT * FROM programs LIMIT #{offset}, 5
+    </select>
+
+    <select id="hasData" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM programs WHERE id = #{id}
+    </select>
+
+    <select id="getData" resultType="vip.floatationdevice.progmgr.data.ProgramData">
+        SELECT * FROM programs WHERE id = #{id}
+    </select>
+
+    <select id="findData" resultType="vip.floatationdevice.progmgr.data.ProgramData">
+        SELECT * FROM programs
+        <where>
+            <if test='typeName != null'>
+                AND typeName = #{typeName}
+            </if>
+            <if test='actorCount != null'>
+                <choose>
+                    <when test='actorCount >= 3'>
+                        AND actorCount >= #{actorCount}
+                    </when>
+                    <otherwise>
+                        AND actorCount = #{actorCount}
+                    </otherwise>
+                </choose>
+            </if>
+            <if test='name != null'>
+                AND name LIKE printf('%%%s%%', #{name})
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertData">
+        INSERT INTO programs(name, typeName, actorList, actorCount, view) VALUES(#{p.name}, #{p.typeName}, #{p.actorList}, #{p.actorCount}, #{p.view})
+    </insert>
+
+    <update id="updateData">
+        UPDATE programs SET name = #{p.name}, typeName = #{p.typeName}, actorList = #{p.actorList}, actorCount = #{p.actorCount}, view = #{p.view} WHERE id = #{p.id}
+    </update>
+
+    <delete id="deleteData">
+        DELETE FROM programs WHERE id = #{id}
+    </delete>
+
+</mapper>

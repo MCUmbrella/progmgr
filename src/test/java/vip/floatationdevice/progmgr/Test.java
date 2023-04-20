@@ -6,6 +6,8 @@ import vip.floatationdevice.progmgr.data.ProgramData;
 
 import java.util.Random;
 
+import static vip.floatationdevice.progmgr.Main.getMapper;
+
 @SpringBootTest
 @Slf4j
 class Test
@@ -33,9 +35,8 @@ class Test
                     sb.append(alp[r.nextInt(alp.length)]).append(',');
                 sb.deleteCharAt(sb.length() - 1);
                 p.setActorList(sb.toString());
-                DataManager.insertData(p);
+                getMapper().insertData(p);
             }
-            DataManager.session.commit();
             log.info("Sample program data generated");
         }
         log.info("Test.contextLoads() END");

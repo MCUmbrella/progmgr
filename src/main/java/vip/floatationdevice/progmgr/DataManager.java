@@ -1,28 +1,20 @@
 package vip.floatationdevice.progmgr;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import vip.floatationdevice.progmgr.data.ProgramData;
-import vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
+
+import static vip.floatationdevice.progmgr.Main.getMapper;
 
 /**
  * Manages saved program data.
  */
-@SuppressWarnings("unused")
 @Slf4j
 public class DataManager
 {
-    private static final SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(Main.class.getResourceAsStream("/mybatis.xml"));
     private static boolean ready = false;
-    static SqlSession session = null;
 
     /**
      * Initializes the data manager.
@@ -37,10 +29,8 @@ public class DataManager
         try
         {
             log.info("Checking database");
-            factory.getConfiguration().addMapper(ProgramDataMapper.class);
             if(!new File("progmgr.db").exists()) createDatabase();
-            session = factory.openSession();
-            int count = session.selectOne("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.getDataCount");
+            int count = getMapper().getDataCount();
             log.info("" + count + " program data found");
             log.info("Database OK");
         }
@@ -66,11 +56,9 @@ public class DataManager
         if(ready)
         {
             ready = false;
-            session.close();
             db.renameTo(new File("progmgr.db.OLD"));
             log.info("Existing database renamed to 'progmgr.db.OLD'");
             createDatabase();
-            session = factory.openSession();
             ready = true;
         }
         else
@@ -96,139 +84,5 @@ public class DataManager
         fos.flush();
         fos.close();
         log.info("Database created");
-    }
-
-// ==================== READ RELATED FUNCTIONS ====================
-
-    public static int getDataCount()
-    {
-        checkReady();
-        return session.selectOne("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.getDataCount");
-    }
-
-    public static List<ProgramData> getAllData()
-    {
-        checkReady();
-        return session.selectList("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.getAllData");
-    }
-
-    /**
-     * Get a list containing max of 20 program data.
-     */
-    public static List<ProgramData> getPagedData(int page)
-    {
-        checkReady();
-        return session.selectList("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.getPagedData", page * 5);
-    }
-
-    /**
-     * Check if a program data with specified ID is in the database.
-     */
-    public static boolean hasData(int id)
-    {
-        checkReady();
-        int status = session.selectOne("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.hasData", id);
-        return status == 1;
-    }
-
-    /**
-     * Get the information of a program with specified ID and return them as ProgramData.
-     * @param id The ID of the program.
-     * @return The ProgramData object of the program with specified ID. If there is no such program data with this ID, return null.
-     */
-    public static ProgramData getData(int id)
-    {
-        checkReady();
-        return session.selectOne("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.getData", id);
-    }
-
-    /**
-     * Search the database for the program data matching the specified properties.
-     * Any of the parameters can be null, indicating it will not be checked in the search - but not all of them.
-     * @return A list containing all the ProgramData object that matches the need.
-     * @throws IllegalArgumentException if you pass 3 nulls.
-     */
-    public static List<ProgramData> findData(String name, String typeName, Integer actorCount)
-    {
-        if(typeName == null && actorCount == null && name == null)
-            throw new IllegalArgumentException("so what the actual fuck do you want to search for? goddamn motherfucking asshole");
-        checkReady();
-        HashMap<String, Object> params = new HashMap<>();
-        params.put("typeName", typeName);
-        params.put("actorCount", actorCount);
-        params.put("name", name);
-        return session.selectList("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.findData", params);
-    }
-
-// ==================== WRITE RELATED FUNCTIONS ====================
-
-    /**
-     * Append a program data to the database using the information of the given ProgramData object.
-     * @param p The information of the program.
-     * @return true if successful, false otherwise.
-     */
-    public static boolean insertData(ProgramData p)
-    {
-        if(p == null) throw new IllegalArgumentException("ProgramData is null");
-        checkReady();
-        log.info("Adding program: " + p.getName());
-        int result = session.insert("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.insertData", p);
-        session.commit();
-        if(result == 1)
-        {
-            log.info("Program added: " + p.getName());
-            return true;
-        }
-        else log.error("Failed to add program: " + p.getName());
-        return false;
-    }
-
-    /**
-     * Update the program data in the database use the corresponding ProgramData object.
-     * @param p The ProgramData object containing all the information of the updated program data, with its ID.
-     * @return true if successful, false otherwise.
-     */
-    public static boolean updateData(ProgramData p)
-    {
-        if(p == null) throw new IllegalArgumentException("ProgramData is null");
-        checkReady();
-        log.info("Updating program #" + p.getId());
-        if(hasData(p.getId()))
-        {
-            int result = session.update("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.updateData", p);
-            session.commit();
-            if(result == 1)
-            {
-                log.info("Update successful: program #" + p.getId() + " - " + p.getName());
-                return true;
-            }
-            else log.error("Failed to update program #" + p.getId());
-        }
-        else log.error("Update failed: program #" + p.getId() + " not exists");
-        return false;
-    }
-
-    /**
-     * Delete a program data from the database.
-     * @param id The ID of the program data to delete.
-     * @return true if successful, false otherwise.
-     */
-    public static boolean deleteData(int id)
-    {
-        checkReady();
-        log.info("Deleting program #" + id);
-        if(hasData(id))
-        {
-            int result = session.update("vip.floatationdevice.progmgr.sqlmapper.ProgramDataMapper.deleteData", id);
-            session.commit();
-            if(result == 1)
-            {
-                log.info("Deleted program #" + id);
-                return true;
-            }
-            else log.error("Failed to delete program #" + id);
-        }
-        else log.error("Deletion failed: program #" + id + " not exists");
-        return false;
     }
 }

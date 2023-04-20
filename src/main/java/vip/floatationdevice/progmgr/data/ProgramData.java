@@ -31,7 +31,9 @@ public class ProgramData implements Serializable
 
     public void setActorList(String actorList)
     {
-        String[] actors = actorList.split("[\\uFF0C,]");
+        // separate by: 、 ， ,
+        String[] actors = actorList.split("[\\u3001\\uFF0C,]");
+        // standardize input & detect actor counts
         StringBuilder actorsListFormatted = new StringBuilder();
         int actorCount = 0;
         for(String s : actors)
@@ -41,10 +43,13 @@ public class ProgramData implements Serializable
                 actorCount++;
             }
         if(actorsListFormatted.length() != 0) actorsListFormatted.deleteCharAt(actorsListFormatted.length() - 1);
+
         this.actorList = actorsListFormatted.toString();
         this.actorCount = actorCount;
     }
 
+    // ignore direct call to setting actor counts, to avoid actorCount and actorList conflicts
+    // setting actor counts is managed by setActorList()
     public void setActorCount(int actorCount){}
 
     /**
